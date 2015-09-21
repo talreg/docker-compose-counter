@@ -1,0 +1,12 @@
+counter:
+  build: .
+  ports:
+   - "3000:3000"
+  volumes:
+   - .:/src
+  links:
+   - redis
+  env_file:
+    - ./counter.env
+redis:
+  image: redis
