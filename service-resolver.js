@@ -3,7 +3,7 @@ class ServiceResolver {
     this._environment=process.env["NODE_ENV"]
     if(this._environment&&this._environment.trim()=="")
       this._environment=null
-    if(process.env["runner"]=="kubernetes")
+    if(process.env["RUNNER"]=="kubernetes")
       this._kubernetes=true
     else
       this._kubernetes=false
@@ -16,6 +16,9 @@ class ServiceResolver {
       if (!this._environment){
         return "localhost"
       }
+      if(this.runningInKubernetes){
+        return `${serviceName}.${this.kubernetesNamespace}.svc.cluster.local`
+      }
       return `${serviceName}_${this._environment}`
   }
 
@@ -26,7 +29,7 @@ class ServiceResolver {
   get kubernetesNamespace(){
     return this._kubernetesNamespace
   }
-  
+
   get environment(){
     if (!this._environment){
       return "localhost"

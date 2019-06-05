@@ -28,4 +28,14 @@ describe('testing dns',()=>{
       expect(serviceResolver.getDNSforService("redis")).to.be(expectedServiceName)
     })
   })
+  describe('testing with kubernetes',()=>{
+    process.env["RUNNER"]="kubernetes";
+    let serviceResolver=new ServiceResolver();
+    it('should return true for kubernetes',()=>{
+      expect(serviceResolver.runningInKubernetes).to.be(true)
+    })
+    it('should return empty namespace for kubernetes',()=>{
+      expect(serviceResolver.kubernetesNamespace).to.be("")
+    })
+  })
 })
