@@ -37,5 +37,10 @@ describe('testing dns',()=>{
     it('should return empty namespace for kubernetes',()=>{
       expect(serviceResolver.kubernetesNamespace).to.be("")
     })
+    it('should return sandbox namespace for kubernetes',()=>{
+      process.env["KUBERNETES_NAMESPACE"]="sandbox";
+      let serviceResolver=new ServiceResolver();
+      expect(serviceResolver.kubernetesNamespace).to.be("sandbox")
+    })
   })
 })
