@@ -37,10 +37,15 @@ describe('testing dns',()=>{
     it('should return empty namespace for kubernetes',()=>{
       expect(serviceResolver.kubernetesNamespace).to.be("")
     })
+    it('service name for kubernetes',()=>{
+      expect(serviceResolver.getDNSforService("redis")).to.be("redis.svc.cluster.local")
+    })
+
     it('should return sandbox namespace for kubernetes',()=>{
       process.env["KUBERNETES_NAMESPACE"]="sandbox";
       let serviceResolver=new ServiceResolver();
       expect(serviceResolver.kubernetesNamespace).to.be("sandbox")
+      expect(serviceResolver.getDNSforService("redis")).to.be("redis.sandbox.svc.cluster.local")
     })
   })
 })

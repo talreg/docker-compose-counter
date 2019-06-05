@@ -17,7 +17,10 @@ class ServiceResolver {
         return "localhost"
       }
       if(this.runningInKubernetes){
-        return `${serviceName}.${this.kubernetesNamespace}.svc.cluster.local`
+        if (this.kubernetesNamespace!="")
+          return `${serviceName}.${this.kubernetesNamespace}.svc.cluster.local`
+        else
+          return `${serviceName}.svc.cluster.local`
       }
       return `${serviceName}_${this._environment}`
   }
