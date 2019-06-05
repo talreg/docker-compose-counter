@@ -6,17 +6,22 @@ It will also show the `NODE_ENV` parameter for testing.
 restarting the app will have no effect on the number of visitors, as it is stored in redis.
 
 Requirements
-=============
+----------------
 You'll need a redis server running on localhost.
 You'll need nodejs express installed (version 10+).
 
 
 Installing the app:
-================
+----------------
 `npm install`
 
+Testing
+----------------
+install mocha `sudo npm install -g mocha`
+run `npm test`
+
 Running the app:
-================
+----------------
 just run `npm start` inside the app directory after installing.
 server will be listening on port 3000
 
