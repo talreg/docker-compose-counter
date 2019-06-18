@@ -1,6 +1,7 @@
 const ServiceResolver=require('../service-resolver')
 const  expect= require('expect.js')
 describe('testing dns',()=>{
+
   describe('testing localhost',()=>{
     process.env["NODE_ENV"]="";
     let serviceResolver=new ServiceResolver();
@@ -17,6 +18,7 @@ describe('testing dns',()=>{
       expect(serviceResolver.kubernetesNamespace).to.be('default')
     })
   })
+
   describe('testing with dns',()=>{
     const expectedServiceName="redis.test"
     process.env["NODE_ENV"]="test";
@@ -38,8 +40,8 @@ describe('testing dns',()=>{
       expect(serviceResolver2.runningInKubernetes).to.be.false
       expect(serviceResolver2.getDNSforService("redis")).to.be("redis.test.btrz")
     })
-
   })
+
   describe('testing with kubernetes',()=>{
     process.env["RUNNER"]="kubernetes";
     let serviceResolver=new ServiceResolver();
