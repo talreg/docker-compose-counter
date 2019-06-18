@@ -15,6 +15,14 @@ spec:
       containers:
       - name: redis
         image: redis
+        volumeMounts:
+          - mountPath: /data
+            name: redis-volume
+      volumes:
+        - name: redis-volume
+          hostPath:
+            path: /redis-data/
+            type: DirectoryOrCreate
 
 ---
 apiVersion: v1
