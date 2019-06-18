@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-redis
+  name: redis
 spec:
   selector:
     app: redis
@@ -39,7 +39,7 @@ spec:
   selector:
     matchLabels:
       app: express-counter
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -47,7 +47,12 @@ spec:
     spec:
       containers:
       - name: express-counter
-        image: talreg/express-counter
+        image: talreg/express-counter:latest
+        env:
+          - name: RUNNER
+            value: "kubernetes"
+          - name: NODE_ENV
+            value: test
 
 ---
 apiVersion: v1
@@ -58,7 +63,7 @@ spec:
   selector:
     app: express-counter
   ports:
-  - protocol: TCP
+  - name: http
     port: 3000
-    targetPort: 31000
+    nodePort: 30003
   type: NodePort

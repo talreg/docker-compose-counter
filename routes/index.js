@@ -6,6 +6,7 @@ const defaultRoute="/"
 
 let serviceResolver=new ServiceResolver()
 let err_message=""
+let prefix="<h3>Version 1</h3><br>"+process.env["RUNNER"]+"<br><br><hr>"
 
 router.get(defaultRoute, function(req, res, next) {
 	const client = redis.createClient(6379,serviceResolver.getDNSforService("redis"));
@@ -16,18 +17,18 @@ router.get(defaultRoute, function(req, res, next) {
 	    err_message=""
 	});
 	if (err_message!=""){
-		res.send(err_message)
+		res.send(prefix+err_message)
 		return
 	}
 	client.get("counter",function(err,value){
 		if(err){
-			res.send("redis error:"+err)
+			res.send(prefix+"redis error:"+err)
 			return
 		}
 		if (!value){
 			value=1;
 		}
-		res.send("\r\nHello!<br>You are the "+value+" visitor.\r\n<br><hr>NODE_ENV="+process.env["NODE_ENV"]);
+		res.send(prefix+"\r\nHello!<br>You are the "+value+" visitor.\r\n<br><hr>NODE_ENV="+process.env["NODE_ENV"]);
 		client.set("counter",Number(value)+1,function(){});
 	});
 });
