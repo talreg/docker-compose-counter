@@ -18,15 +18,27 @@ describe('testing dns',()=>{
     })
   })
   describe('testing with dns',()=>{
-    const expectedServiceName="redis_test"
+    const expectedServiceName="redis.test"
     process.env["NODE_ENV"]="test";
     let serviceResolver=new ServiceResolver();
+
     it('should return test as environment',()=>{
       expect(serviceResolver.environment).to.be("test")
     })
+
     it('should return service with environment var',()=>{
       expect(serviceResolver.getDNSforService("redis")).to.be(expectedServiceName)
     })
+
+    it('should use suffix when one exists',()=>{
+      delete process.env["RUNNER"];
+      let serviceResolver2=new ServiceResolver()
+      serviceResolver2.suffix="btrz"
+      expect(serviceResolver2.suffix).to.be.equal("btrz")
+      expect(serviceResolver2.runningInKubernetes).to.be.false
+      expect(serviceResolver2.getDNSforService("redis")).to.be("redis.test.btrz")
+    })
+
   })
   describe('testing with kubernetes',()=>{
     process.env["RUNNER"]="kubernetes";
@@ -42,6 +54,7 @@ describe('testing dns',()=>{
     })
 
     it('should return sandbox namespace for kubernetes',()=>{
+      process.env["RUNNER"]="kubernetes";
       process.env["KUBERNETES_NAMESPACE"]="sandbox";
       let serviceResolver=new ServiceResolver();
       expect(serviceResolver.kubernetesNamespace).to.be("sandbox")
