@@ -14,7 +14,7 @@ describe('testing dns',()=>{
       expect(serviceResolver.runningInKubernetes).to.be(false)
     })
     it('should return undefined namespace for kubernetes',()=>{
-      expect(serviceResolver.kubernetesNamespace).to.be(undefined)
+      expect(serviceResolver.kubernetesNamespace).to.be('default')
     })
   })
   describe('testing with dns',()=>{
@@ -34,11 +34,11 @@ describe('testing dns',()=>{
     it('should return true for kubernetes',()=>{
       expect(serviceResolver.runningInKubernetes).to.be(true)
     })
-    it('should return empty namespace for kubernetes',()=>{
-      expect(serviceResolver.kubernetesNamespace).to.be("")
+    it('should return default namespace for kubernetes',()=>{
+      expect(serviceResolver.kubernetesNamespace).to.be("default")
     })
     it('service name for kubernetes',()=>{
-      expect(serviceResolver.getDNSforService("redis")).to.be("redis.svc.cluster.local")
+      expect(serviceResolver.getDNSforService("redis")).to.be("redis.default.svc.cluster.local")
     })
 
     it('should return sandbox namespace for kubernetes',()=>{

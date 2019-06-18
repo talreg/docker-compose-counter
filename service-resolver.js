@@ -7,9 +7,7 @@ class ServiceResolver {
       this._kubernetes=true
     else
       this._kubernetes=false
-    if(this.runningInKubernetes){
-        process.env["KUBERNETES_NAMESPACE"]?this._kubernetesNamespace=process.env["KUBERNETES_NAMESPACE"]:this._kubernetesNamespace=""
-    }
+    process.env["KUBERNETES_NAMESPACE"]?this._kubernetesNamespace=process.env["KUBERNETES_NAMESPACE"]:this._kubernetesNamespace="default"
   }
 
   getDNSforService(serviceName){
@@ -17,8 +15,8 @@ class ServiceResolver {
         return "localhost"
       }
       if(this.runningInKubernetes){
-        if (this.kubernetesNamespace!="")
-          return `${serviceName}.${this.kubernetesNamespace}.svc.cluster.local`
+        if (this._kubernetesNamespace!="")
+          return `${serviceName}.${this._kubernetesNamespace}.svc.cluster.local`
         else
           return `${serviceName}.svc.cluster.local`
       }
